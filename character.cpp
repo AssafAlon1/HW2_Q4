@@ -1,8 +1,8 @@
-#include "character.h"
+#include "Character.h"
 
 namespace mtm
 {
-    character::character(int health, int ammo, int attack_range, int power,
+    Character::Character(int health, int ammo, int attack_range, int power,
                   int moving_range, int reload_amount, char ascii_representation)
     {
         this->health               = health;
@@ -16,7 +16,7 @@ namespace mtm
     }
     
 
-    void character::reload()
+    void Character::reload()
     {
         ammo += reload_amount;
     }

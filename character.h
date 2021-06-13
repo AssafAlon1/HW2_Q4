@@ -3,7 +3,7 @@
 
 namespace mtm
 {
-    class character
+    class Character
     {
     private:
         int health;
@@ -15,16 +15,15 @@ namespace mtm
         int reload_amount;
         char ascii_representation;
         
-
     public:
-        character(int health, int ammo, int attack_range, int power,
+        Character(int health, int ammo, int attack_range, int power,
                   int moving_range, int reload_amount, char ascii_representation);
-        ~character() = default;
+        virtual ~Character() = default;
+        Character(const Character& existing_Character) = default;
 
-        // copy constructor
-        // assignemnt operator
+        // assignemnt operator ???
         // 
-        virtual character* clone() = 0;
+        virtual Character* clone() = 0;
         virtual void attack() = 0;
         void reload();
 
