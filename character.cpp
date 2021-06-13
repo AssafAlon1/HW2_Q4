@@ -2,17 +2,18 @@
 
 namespace mtm
 {
-    Character::Character(int health, int ammo, int attack_range, int power,
+    Character::Character(int health, int ammo, int attack_range, int power, Team team,
                   int moving_range, int reload_amount, char ascii_representation)
     {
-        this->health               = health;
-        this->ammo                 = ammo;
-        this->attack_range         = attack_range;
-        this->power                = power;
+        this->health        = health;
+        this->ammo          = ammo;
+        this->attack_range  = attack_range;
+        this->power         = power;
 
-        this->moving_range         = moving_range;
-        this->reload_amount        = reload_amount;
-        this->ascii_representation = ascii_representation;
+        this->moving_range  = moving_range;
+        this->attack_cost   = attack_cost;
+        this->reload_amount = reload_amount;
+        this->team          = team;
     }
     
 
