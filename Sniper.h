@@ -6,6 +6,7 @@ namespace mtm
     class Sniper : public Character
     {
     private:
+
         int attack_counter;
 
         static const int MOVING_RANGE        = 4;
@@ -20,7 +21,8 @@ namespace mtm
 
         // Inherited functions
         //Character* clone();
-        //void attack();
+        void validateRange(int distance);
+        void attack(Board& board ,GridPoint& src_coordinates, GridPoint& dst_coordinates);
         char getAscii();
     };
 

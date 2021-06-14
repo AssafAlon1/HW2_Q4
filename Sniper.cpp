@@ -15,5 +15,31 @@ namespace mtm
         {
             return POWERLIFTERS_ASCII;
         }
+
+        return CROSSFITTERS_ASCII;
+    }
+
+
+    void Sniper::validateRange(int distance)
+    {
+        if (distance > attack_range || distance <= attack_range/2)
+        {
+            // OutOfRange
+        }
+    }
+
+    void Sniper::attack(Board& board ,GridPoint& src_coordinates, GridPoint& dst_coordinates)
+    {
+        
+        this->validateAttack(board ,src_coordinates, dst_coordinates);
+
+        // IlegalTarget [only enemy]
+
+        // actual attack
+
+        // reduce ammo 
+        // do damage [or double]
+
+        //
     }
 }

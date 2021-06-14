@@ -21,4 +21,25 @@ namespace mtm
     {
         ammo += reload_amount;
     }
+
+    void Character::validateRange(int distance)
+    {
+        if (distance > range)
+        {
+            // OutOfRange
+        }
+    }
+
+    void Character::validateAttack(Board& board, GridPoint& src_coordinate, GridPoint& dst_coordinate)
+    {
+        // Illegalcell
+
+        // CellEmpty
+
+        // OutOfRange
+
+        // OutOfAmmo
+
+        return
+    }
 }
