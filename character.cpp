@@ -22,7 +22,7 @@ namespace mtm
         ammo += reload_amount;
     }
 
-    void Character::validateRange(int distance)
+    virtual void Character::validateRange(const int distance) const
     {
         if (distance > range)
         {
@@ -30,12 +30,22 @@ namespace mtm
         }
     }
 
-    void Character::takeDamage(int damage_amount)
+
+    virtual void Character::validateTarget(std::shared_ptr<Character> target) const
+    {
+        if (target->team != team)
+        {
+            // IllegalTarget
+        }
+    }
+
+
+    void Character::takeDamage(const int damage_amount)
     {
         health -= damage_amount;
     }
 
-    void Character::isAlive()
+    void Character::isAlive() const
     {
         if(health == 0)
         {
@@ -44,7 +54,7 @@ namespace mtm
         return true:
     }
 
-    void Character::validateAttack(GridPoint& src_coordinate, GridPoint& dst_coordinate, BoardCell& cell)
+    void Character::basicAttackValidation(GridPoint& src_coordinate, GridPoint& dst_coordinate, BoardCell& cell)
     {
         // IllegalCell  <-- Do on game?
 

@@ -21,6 +21,8 @@ namespace mtm
 
     class IllegalArgument : public Exception {}; // OVERWRITE WHAT() FUNCTION
 
+    class IllegalCell : public Exception {};
+
     class CellEmpty : public Exception {};       // OVERWRITE WHAT() FUNCTION
 
     class MoveTooFar : public Exception {};      

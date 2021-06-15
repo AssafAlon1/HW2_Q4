@@ -10,6 +10,8 @@ using std::vector;
 
 namespace mtm
 {
+    class Character; // Forward declaration of Character
+    
     class Board
     {
     public:

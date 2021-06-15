@@ -2,14 +2,13 @@
 #define HW2_SNIPER_H
 
 #include "Character.h"
-#include "Auxiliaries.h"
+#include "Board.h"
 
 namespace mtm
 {
     class Sniper : public Character
     {
     private:
-
         int attack_counter;
 
         static const int MOVING_RANGE        = 4;
@@ -23,10 +22,12 @@ namespace mtm
         ~Sniper() = default;
 
         // Inherited functions
-        //Character* clone();
+        std::shared_ptr<Character> clone();
         void validateRange(int distance);
-        void attack(Board& board ,GridPoint& src_coordinates, GridPoint& dst_coordinates);
+        void attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates);
         char getAscii();
+
+
     };   
 }
 

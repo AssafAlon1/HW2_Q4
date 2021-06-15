@@ -2,7 +2,7 @@
 #define HW2_CHARACTER_H
 
 #include "Auxiliaries.h"
-//#include "Board.h"
+#include "Board.h"
 
 namespace mtm
 {
@@ -16,15 +16,17 @@ namespace mtm
 
         // assignemnt operator ???
         // 
-        virtual Character* clone() = 0;
-        virtual void attack() = 0;
-        virtual char getAscii() = 0;
-        virtual void validateRange(int distance);
+        virtual std::shared_ptr<Character> clone() = 0;
+        virtual void attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates) = 0;
+        virtual char getAscii() const = 0;
+
+        virtual void validateRange(const int distance) const;
+        virtual void validateTarget(std::shared_ptr<Character> target) const;
+
         void reload();
-        void takeDamage(int damage_amount);
-        bool isAlive();
-        
-        //void validateAttack(GridPoint& src_coordinate, GridPoint& dst_coordinate, BoardCell& cell);
+        void takeDamage(const int damage_amount);
+        bool isAlive() const;
+        void basicAttackValidation(const GridPoint& src_coordinate, const GridPoint& dst_coordinate);
 
 
 
