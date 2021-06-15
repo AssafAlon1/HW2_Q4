@@ -38,8 +38,8 @@ namespace mtm
         // actual attack
 
         // reduce ammo 
-        // do damage [or double]
-
+        // do damage [or double damage]
+        // check if killed character
         //
     }
 }

@@ -1,5 +1,7 @@
-#include <stdexcept>
+#ifndef HW2_EXCEPTIONS_H
+#define HW2_EXECPTIONS_H
 
+#include <stdexcept>
 
 
 namespace mtm
@@ -22,3 +24,5 @@ namespace mtm
 
     
 }
+
+#endif // HW2_EXCEPTIONS

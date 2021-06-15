@@ -1,3 +1,6 @@
+#ifndef HW2_SNIPER_H
+#define HW2_SNIPER_H
+
 #include "Character.h"
 #include "Auxiliaries.h"
 
@@ -24,8 +27,8 @@ namespace mtm
         void validateRange(int distance);
         void attack(Board& board ,GridPoint& src_coordinates, GridPoint& dst_coordinates);
         char getAscii();
-    };
-
-
-    
+    };   
 }
+
+
+#endif // HW2_SNIPER_H

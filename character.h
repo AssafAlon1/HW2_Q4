@@ -1,5 +1,8 @@
-#include "Auxiliaries.h"
+#ifndef HW2_CHARACTER_H
+#define HW2_CHARACTER_H
 
+#include "Auxiliaries.h"
+#include "Board.h"
 
 namespace mtm
 {
@@ -21,9 +24,7 @@ namespace mtm
         void reload();
 
         // void takeDamage(int damage_amount);
-        // {
-        //     health -= damage_amount;
-        // }
+        // bool isAlive()
 
         void validateAttack(Board& board, GridPoint& src_coordinate, GridPoint& dst_coordinate);
 
@@ -41,3 +42,5 @@ namespace mtm
         int reload_amount;
     };
 }
+
+#endif // HW2_CHARACTER_H
