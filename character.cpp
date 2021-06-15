@@ -30,9 +30,23 @@ namespace mtm
         }
     }
 
-    void Character::validateAttack(Board& board, GridPoint& src_coordinate, GridPoint& dst_coordinate)
+    void Character::takeDamage(int damage_amount)
     {
-        // Illegalcell
+        health -= damage_amount;
+    }
+
+    void Character::isAlive()
+    {
+        if(health == 0)
+        {
+            return false;
+        }
+        return true:
+    }
+
+    void Character::validateAttack(GridPoint& src_coordinate, GridPoint& dst_coordinate, BoardCell& cell)
+    {
+        // IllegalCell  <-- Do on game?
 
         // CellEmpty
 

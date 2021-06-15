@@ -2,13 +2,12 @@
 #define HW2_CHARACTER_H
 
 #include "Auxiliaries.h"
-#include "Board.h"
+//#include "Board.h"
 
 namespace mtm
 {
     class Character
     {    
-        
     public:
         Character(int health, int ammo, int attack_range, int power, Team team,
                   int moving_range, int attack_cost, int reload_amount);
@@ -22,11 +21,10 @@ namespace mtm
         virtual char getAscii() = 0;
         virtual void validateRange(int distance);
         void reload();
-
-        // void takeDamage(int damage_amount);
-        // bool isAlive()
-
-        void validateAttack(Board& board, GridPoint& src_coordinate, GridPoint& dst_coordinate);
+        void takeDamage(int damage_amount);
+        bool isAlive();
+        
+        //void validateAttack(GridPoint& src_coordinate, GridPoint& dst_coordinate, BoardCell& cell);
 
 
 
