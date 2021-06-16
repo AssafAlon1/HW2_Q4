@@ -107,4 +107,85 @@ namespace mtm
     {
         this->character = character;
     }
+
+
+
+
+
+    Board::Iterator::Iterator(const Board* board, int row, int col) : board(board), row(row), col(col)
+    {
+    }
+
+    // Moves the iterator forwards
+    Board::Iterator& Board::Iterator::operator++()
+    {
+        // Reached the last cell
+        if (col >= board->cols - 1 && row >= board->rows - 1)
+        {
+            throw std::out_of_range("Out of range"); // ???
+        }
+
+        // Reached the end of a row
+        if (row >= board->rows - 1)
+        {
+            row = 0;
+            col++;
+            return *this;
+        }
+
+        // Somewhere in the middle
+        row++;
+        return *this;
+    }
+
+
+    // Moves the iterator forwards
+    Board::Iterator Board::Iterator::operator++(int)
+    {
+        // Reached the last cell
+        if (col >= board->cols - 1 && row >= board->rows - 1)
+        {
+            throw std::out_of_range("Out of range"); // ???
+        }
+
+        Board::Iterator result = *this;
+
+        // Reached the end of a row
+        if (row >= board->rows - 1)
+        {
+            row = 0;
+            col++;
+            return *this;
+        }
+
+        // Somewhere in the middle
+        row++;
+        return result;
+    }
+
+    // Compares an iterator with another
+    bool Board::Iterator::operator==(Board::Iterator iterator) const
+    {
+        //assert(iterator.board == board);
+        return (row == iterator.row && col == iterator.col);
+    }
+
+
+    const std::shared_ptr<Character> Board::Iterator::operator*() const
+    {
+        return board->getCharacter(GridPoint(row, col));
+    }
+
+    // Returns an iterator to the begining of the board
+    Board::Iterator Board::begin() const
+    {
+        return Board::Iterator(this, 0, 0);
+    }
+
+    // Returns an iterator to the end of the board
+    Board::Iterator Board::end() const
+    {
+        return Board::Iterator(this, rows, cols);
+    }
+
 }

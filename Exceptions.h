@@ -34,7 +34,6 @@ namespace mtm
     class OutOfAmmo : public Exception {};
 
     class IllegalTarget : public Exception {};
-
     
 }
 

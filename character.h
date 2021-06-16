@@ -25,16 +25,15 @@ namespace mtm
         virtual void attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates) = 0;
         virtual char getAscii() const = 0;
 
-        virtual void validateRange(const int distance) const;
+        virtual void validateRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
         virtual void validateTarget(std::shared_ptr<Character> target) const;
 
         void reload();
         void move(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates);
         void takeDamage(const units_t damage_amount);
         bool isAlive() const;
-        void basicAttackValidation(const GridPoint& src_coordinates, const GridPoint& dst_coordinates);
-
-
+        void basicAttackValidation(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
+        Team getTeam() const;
 
     protected:   // PRIVATIZE WHATEVER WE CAN / FIND ALTERNATIVES
         units_t health;
@@ -47,6 +46,9 @@ namespace mtm
         units_t attack_cost;
         units_t reload_amount;
     };
+
+    bool isPowerlifter(const std::shared_ptr<Character> character);
+    bool isCrossfitter(const std::shared_ptr<Character> character);
 }
 
 #endif // HW2_CHARACTER_H

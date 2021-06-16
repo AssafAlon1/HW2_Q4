@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Exceptions.h"
 #include "Sniper.h"
+#include <algorithm>
 
 namespace mtm
 {
@@ -18,7 +19,7 @@ namespace mtm
             throw IllegalCell();
         }
 
-        if (board.isCellOccupied(src_coordinates))
+        if (!(board.isCellOccupied(src_coordinates)))
         {
             throw CellEmpty();
         }
@@ -43,4 +44,28 @@ namespace mtm
 
         return nullptr; // UPDATE ME , SOLDIER
     }
+
+
+    void Game::addCharacter(const GridPoint& coordinates, std::shared_ptr<Character> character)
+    {
+        if (!(board.isCellInBoard(coordinates)))
+        {
+            throw IllegalCell();
+        }
+        if (board.isCellOccupied(coordinates))
+        {
+            throw CellOccupied();
+        }
+        board.putCharacter(coordinates, character);
+    }
+
+
+    // bool Game::isOver (Team* winningTeam) const
+    // {
+    //     //int powerlifter_characters = std::count_if(board.begin(), board.end(), isPowerlifter);
+    //     //[](std::shared_ptr<Character> ch){
+    //     //    return ch->getTeam() == POWERLIFTERS;
+    //     //}
+    //     std::count_if(board.begin(), board.end(), isPowerlifter);
+    // }
 }

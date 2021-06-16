@@ -1,4 +1,5 @@
 #include "Sniper.h"
+#include "Exceptions.h"
 
 namespace mtm
 {
@@ -13,11 +14,12 @@ namespace mtm
         return std::shared_ptr<Sniper>(new Sniper(*this));
     }
 
-    void Sniper::validateRange(int distance) const
+    void Sniper::validateRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const
     {
+        int distance = GridPoint::distance(src_coordinates, dst_coordinates);
         if (distance > attack_range || distance <= attack_range/2)
         {
-            // OutOfRange
+            throw OutOfRange();
         }
     }
 
@@ -27,7 +29,6 @@ namespace mtm
         {
             return POWERLIFTERS_ASCII;
         }
-
         return CROSSFITTERS_ASCII;
     }
 

@@ -1,16 +1,16 @@
-#ifndef HW2_SNIPER_H
-#define HW2_SNIPER_H
+#ifndef HW2_SOLDIER_H
+#define HW2_SOLDIER_H
 
 #include "Character.h"
 #include "Board.h"
 
 namespace mtm
 {
-    class Sniper : public Character
+    class Soldier : public Character
     {
     public:
-        Sniper(units_t health, units_t ammo, units_t attack_range, units_t power, Team team);
-        ~Sniper() = default;
+        Soldier(units_t health, units_t ammo, units_t attack_range, units_t power, Team team);
+        ~Soldier() = default;
 
         // Inherited functions
         std::shared_ptr<Character> clone() const;
@@ -19,16 +19,13 @@ namespace mtm
         char getAscii() const;
 
     private:
-        int attack_counter;
-
-        static const int MOVING_RANGE        = 4;
+        static const int MOVING_RANGE        = 3;
         static const int ATTACK_COST         = 1;
-        static const int RELOAD_AMOUNT       = 2;
+        static const int RELOAD_AMOUNT       = 3;
         static const char CROSSFITTERS_ASCII = 's';
         static const char POWERLIFTERS_ASCII = 'S';
-
-    };   
+    };
 }
 
 
-#endif // HW2_SNIPER_H
+#endif // HW2_SOLDIER_H

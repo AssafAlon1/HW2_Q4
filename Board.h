@@ -14,6 +14,17 @@ namespace mtm
 
     class Board
     {
+    private:
+
+        class BoardCell;
+        class Iterator;
+        static const int INVALID_COORDINATE = -1;
+
+        int rows;
+        int cols;
+        
+        vector<vector<BoardCell>> cells;
+
     public:
         Board(int rows, int cols);
         ~Board() = default;
@@ -25,15 +36,9 @@ namespace mtm
 
         void removeCharacter(const GridPoint& coordinates);
         void putCharacter(const GridPoint& coordinates, std::shared_ptr<Character> character);
-
-    private:
-        class BoardCell;
-        static const int INVALID_COORDINATE = -1;
-
-        int rows;
-        int cols;
-        
-        vector<vector<BoardCell>> cells;
+        Iterator begin() const;
+        Iterator end() const;
+    
         
     };
 
@@ -48,14 +53,35 @@ namespace mtm
 
         bool isCellOccupied() const;
         std::shared_ptr<Character> getCharacter() const;
-        
+
         void removeCharacter();
         void putCharacter(std::shared_ptr<Character> character);
 
     private:
         GridPoint coordinates;
         std::shared_ptr<Character> character;
+
     };
+
+    class Board::Iterator
+    {
+    public:
+        Iterator(const Iterator& iterator) = default;
+        ~Iterator() = default;
+        Iterator& operator=(const Iterator& iterator) = default;
+        Iterator& operator++();
+        Iterator operator++(int);
+        bool operator==(Iterator iterator) const;
+        const std::shared_ptr<Character> operator*() const;
+    private:
+        Iterator(const Board* board, int row, int col);
+        const Board* board;
+        int row, col;
+        friend class Board;
+    };
+
+
+     
 }
 
 #endif // HW2_BOARD_H

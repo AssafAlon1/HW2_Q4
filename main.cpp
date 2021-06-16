@@ -1,8 +1,8 @@
 #include <assert.h>
-#include "Game.h"
 #include "Character.h"
 #include "Exceptions.h"
 #include "Auxiliaries.h"
+#include "Game.h"
 
 #include "Board.h"
 
@@ -64,20 +64,35 @@ void boardTest1()
 
 void basicTest1()
 {
-    std::shared_ptr<Character> sniper1 = Game::makeCharacter(SNIPER, POWERLIFTERS, 1, 1, 1, 1);
-    std::shared_ptr<Character> sniper2 = Game::makeCharacter(SNIPER, CROSSFITTERS, 1, 1, 1, 1);
+    cout << "Running basicTest1... ";
+    std::shared_ptr<Character> sniper1 = Game::makeCharacter(SNIPER, POWERLIFTERS, 1, 4, 4, 4);
+    std::shared_ptr<Character> sniper2 = Game::makeCharacter(SNIPER, CROSSFITTERS, 1, 4, 4, 4);
     assert(sniper1->getAscii() == 'S');
     assert(sniper2->getAscii() == 's');
 
 
-    //Game game1 = Game(4, 4);
-    //game1.
+    Game game1 = Game(4, 4);
+    GridPoint co = GridPoint(0,0);
+    game1.addCharacter(co, sniper1);
+    game1.addCharacter(GridPoint(1,3), sniper1);
+    //assert(game1.isOver());
+    game1.addCharacter(GridPoint(0,1), sniper2);
+    //assert(!(game1.isOver()));
+    
+    try { game1.addCharacter(GridPoint(-1,0), sniper1); }
+    catch (mtm::IllegalCell& e) {}
+    
+    try { game1.addCharacter(GridPoint(0,0),  sniper1); }
+    catch (mtm::CellOccupied& e) {}
 
+    
+
+    cout << "[OK]" << endl;;
 }
 
 int main ()
 {
-    //exceptionTest();
+    exceptionTest();
     boardTest1(); // Private
     basicTest1(); // Private
 }

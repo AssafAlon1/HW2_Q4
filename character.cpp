@@ -22,6 +22,7 @@ namespace mtm
         ammo += reload_amount;
     }
 
+    // Moves a character from source coordinates to destination coordinates
     void Character::move(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
     {
         if (GridPoint::distance(src_coordinates, dst_coordinates) >= moving_range)
@@ -39,27 +40,28 @@ namespace mtm
         board.removeCharacter(src_coordinates);
     }
 
-    void Character::validateRange(const int distance) const
+    // Validates the range of an attack
+    void Character::validateRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const
     {
-        if (distance > attack_range)
+        int distance = GridPoint::distance(src_coordinates, dst_coordinates);
+        if (distance > attack_range || distance < 0)
         {
-            // OutOfRange
+            throw OutOfRange();
         }
     }
 
-
+    // Validates the target of an attack
     void Character::validateTarget(std::shared_ptr<Character> target) const
     {
         if (target == nullptr)
         {
-            // IllegalTarget because cell is empty
+            throw IllegalTarget(); // because cell is empty
         }
         if (target->team != team)
         {
-            // IllegalTarget because target is ally
+            throw IllegalTarget(); // because target is ally
         }
     }
-
 
     void Character::takeDamage(const units_t damage_amount)
     {
@@ -71,7 +73,7 @@ namespace mtm
         return health > 0;
     }
 
-    void Character::basicAttackValidation(const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
+    void Character::basicAttackValidation(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const
     {
         // CellEmpty
 
@@ -80,5 +82,22 @@ namespace mtm
         // OutOfAmmo
 
         return;
+    }
+
+    Team Character::getTeam() const
+    {
+        return team;
+    }
+
+    // Returns true if the character is a powerlifter - false otherwise
+    bool isPowerlifter(const std::shared_ptr<Character> character)
+    {
+        return character->getTeam() == POWERLIFTERS;
+    }
+
+    // Returns true if the character is a crossfitter - false otherwise
+    bool isCrossfitter(const std::shared_ptr<Character> character)
+    {
+        return character->getTeam() == CROSSFITTERS;
     }
 }
