@@ -14,17 +14,6 @@ namespace mtm
 
     class Board
     {
-    private:
-
-        class BoardCell;
-        class Iterator;
-        static const int INVALID_COORDINATE = -1;
-
-        int rows;
-        int cols;
-        
-        vector<vector<BoardCell>> cells;
-
     public:
         Board(int rows, int cols);
         ~Board() = default;
@@ -36,8 +25,20 @@ namespace mtm
 
         void removeCharacter(const GridPoint& coordinates);
         void putCharacter(const GridPoint& coordinates, std::shared_ptr<Character> character);
+
+        class Iterator;
         Iterator begin() const;
         Iterator end() const;
+    private:
+
+        class BoardCell;
+        
+        static const int INVALID_COORDINATE = -1;
+
+        int rows;
+        int cols;
+        
+        vector<vector<BoardCell>> cells;
     
         
     };

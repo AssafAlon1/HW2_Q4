@@ -185,7 +185,7 @@ namespace mtm
     // Returns an iterator to the end of the board
     Board::Iterator Board::end() const
     {
-        return Board::Iterator(this, rows, cols);
+        return Board::Iterator(this, rows - 1, cols - 1);
     }
 
 }

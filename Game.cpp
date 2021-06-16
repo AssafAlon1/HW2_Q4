@@ -60,12 +60,39 @@ namespace mtm
     }
 
 
-    // bool Game::isOver (Team* winningTeam) const
-    // {
-    //     //int powerlifter_characters = std::count_if(board.begin(), board.end(), isPowerlifter);
-    //     //[](std::shared_ptr<Character> ch){
-    //     //    return ch->getTeam() == POWERLIFTERS;
-    //     //}
-    //     std::count_if(board.begin(), board.end(), isPowerlifter);
-    // }
+    bool Game::isOver (Team* winningTeam) const
+    {
+        //int powerlifter_characters = std::count_if(board.begin(), board.end(), isPowerlifter);
+        //[](std::shared_ptr<Character> ch){
+        //    return ch->getTeam() == POWERLIFTERS;
+        //}
+        //std::count_if(board.begin(), board.end(), isPowerlifter);
+
+        int amount_of_powerlifters = 0;
+        int amount_of_crossfitters = 0;
+        for (Board::Iterator iterator = board.begin() ; !(iterator == board.end()) ; iterator++)
+        {
+            if ((*iterator) == nullptr)
+            {
+                continue;
+            }
+
+            if ( (*iterator)->getTeam() == POWERLIFTERS)
+            {
+                amount_of_powerlifters++;
+            }
+            else
+            {
+                amount_of_crossfitters++;
+            }
+        }
+
+        if ((amount_of_crossfitters >  0 && amount_of_powerlifters >  0) || 
+             (amount_of_crossfitters == 0 && amount_of_powerlifters == 0))
+        {
+            return false;
+        }
+        
+        return true;
+    }
 }
