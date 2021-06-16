@@ -1,50 +1,87 @@
 #include "Board.h"
+#include "Exceptions.h"
+#include "assert.h"
 
 namespace mtm
 {
+
+    //=========================================
+    //========== Board implementation =========
+    //=========================================
+
+    // Board constructor
+    Board::Board(int rows, int cols)
+    {
+        if (rows <= 0 || cols <= 0)
+        {
+            throw IllegalArgument();
+        }
+        this->rows  = rows;
+        this->cols  = cols;
+        this->cells = vector<vector<Board::BoardCell>>(rows, vector<BoardCell>(cols));
+
+        for (int row = 0; row < rows ; row++)
+        {
+            for (int col = 0 ; col < cols ; col++)
+            {
+                this->cells[row][col] = BoardCell(GridPoint(row, col));
+            }
+        }
+    }
+
     // Checks if given coordinates are within the board
-    bool Board::isCellInBoard(GridPoint& coordinates)
+    bool Board::isCellInBoard(const GridPoint& coordinates) const
     {
         return (coordinates.col >= 0 && coordinates.col < cols &&
                 coordinates.row >= 0 && coordinates.row < rows);
     }
 
     // Checks if a character is stored within a specific cell
-    bool Board::isCellOccupied(GridPoint& coordinate)
+    bool Board::isCellOccupied(const GridPoint& coordinates) const
     {
-        return this->cells[coordinate.row][coordinate.col].isCellOccupied();
+        return this->cells[coordinates.row][coordinates.col].isCellOccupied();
     }
 
     // Returns a shared pointer to a character from a coordinate
-    std::shared_ptr<Character> Board::getCharacter(GridPoint& coordinate)
+    std::shared_ptr<Character> Board::getCharacter(const GridPoint& coordinates) const
     {
-        return this->cells[coordinate.row][coordinate.col].getCharacter();
+        return this->cells[coordinates.row][coordinates.col].getCharacter();
     }
 
     // Removes a character from a given coordinates 
-    void Board::removeCharacter(GridPoint& coordinate)
+    void Board::removeCharacter(const GridPoint& coordinates)
     {
-        return this->cells[coordinate.row][coordinate.col].removeCharacter();
+
+        return this->cells[coordinates.row][coordinates.col].removeCharacter();
     }
     
     // Puts a given character in a given coordinates
-    void Board::putCharacter(GridPoint& coordinate, std::shared_ptr<Character> character)
+    void Board::putCharacter(const GridPoint& coordinates, std::shared_ptr<Character> character)
     {
-        return this->cells[coordinate.row][coordinate.col].putCharacter(character);
+        assert(this->isCellInBoard(coordinates));
+        assert(!(this->isCellOccupied(coordinates)));
+        
+        return this->cells[coordinates.row][coordinates.col].putCharacter(character);
     }
     
+
+
+    //=========================================
+    //======== BoardCell implementation =======
+    //=========================================
+
     // BoardCell default constructor
-    Board::BoardCell::BoardCell() : coordinate(GridPoint(INVALID_COORDINATE, INVALID_COORDINATE)), character(nullptr)
+    Board::BoardCell::BoardCell() : coordinates(GridPoint(INVALID_COORDINATE, INVALID_COORDINATE)), character(nullptr)
     {
     }
     
     // BoardCell constructor
-    Board::BoardCell::BoardCell(GridPoint coordinate) : coordinate(coordinate), character(nullptr)
+    Board::BoardCell::BoardCell(GridPoint coordinates) : coordinates(coordinates), character(nullptr)
     {
     }
-    
+
     // Checks if the cell contains a character
-    bool Board::BoardCell::isCellOccupied()
+    bool Board::BoardCell::isCellOccupied() const
     {
         if(this->character != nullptr)
         {
@@ -54,7 +91,7 @@ namespace mtm
     }
 
     // Gets a character from a cell
-    std::shared_ptr<Character> Board::BoardCell::getCharacter()
+    std::shared_ptr<Character> Board::BoardCell::getCharacter() const
     {
         return this->character;
     }
@@ -69,21 +106,5 @@ namespace mtm
     void Board::BoardCell::putCharacter(std::shared_ptr<Character> character)
     {
         this->character = character;
-    }
-
-    // Board constructor
-    Board::Board(int rows, int cols)
-    {
-        this->rows  = rows;
-        this->cols  = cols;
-        this->cells = vector<vector<Board::BoardCell>>(rows, vector<BoardCell>(cols));
-
-        for (int row = 0; row < rows ; row++)
-        {
-            for (int col = 0 ; col < cols ; col++)
-            {
-                this->cells[row][col] = BoardCell(GridPoint(row, col));
-            }
-        }
     }
 }

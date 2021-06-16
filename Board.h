@@ -19,11 +19,12 @@ namespace mtm
         ~Board() = default;
         Board(const Board& board) = default;
 
-        bool isCellInBoard(GridPoint& coordinates);
-        bool isCellOccupied(GridPoint& coordinate);
-        std::shared_ptr<Character> getCharacter(GridPoint& coordinate);
-        void removeCharacter(GridPoint& coordinate);
-        void putCharacter(GridPoint& coordinate, std::shared_ptr<Character> character);
+        bool isCellInBoard(const GridPoint& coordinates) const;
+        bool isCellOccupied(const GridPoint& coordinates) const;
+        std::shared_ptr<Character> getCharacter(const GridPoint& coordinates) const;
+
+        void removeCharacter(const GridPoint& coordinates);
+        void putCharacter(const GridPoint& coordinates, std::shared_ptr<Character> character);
 
     private:
         class BoardCell;
@@ -41,17 +42,18 @@ namespace mtm
     {
     public:
         BoardCell();
-        BoardCell(GridPoint coordinate);
+        BoardCell(GridPoint coordinates);
         BoardCell(const BoardCell& cell) = default;
         ~BoardCell() = default;
 
-        bool isCellOccupied();
-        std::shared_ptr<Character> getCharacter();
+        bool isCellOccupied() const;
+        std::shared_ptr<Character> getCharacter() const;
+        
         void removeCharacter();
         void putCharacter(std::shared_ptr<Character> character);
 
     private:
-        GridPoint coordinate;
+        GridPoint coordinates;
         std::shared_ptr<Character> character;
     };
 }

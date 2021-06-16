@@ -2,18 +2,18 @@
 
 namespace mtm
 {
-    Sniper::Sniper(int health, int ammo, int attack_range, int power, Team team)
+    Sniper::Sniper(units_t health, units_t ammo, units_t attack_range, units_t power, Team team)
     : Character(health, ammo, attack_range, power, team, MOVING_RANGE, ATTACK_COST, RELOAD_AMOUNT)
     {
         attack_counter = 0;
     }
     
-    std::shared_ptr<Character> clone()
+    std::shared_ptr<Character> Sniper::clone() const
     {
-
+        return std::shared_ptr<Sniper>(new Sniper(*this));
     }
 
-    void Sniper::validateRange(int distance)
+    void Sniper::validateRange(int distance) const
     {
         if (distance > attack_range || distance <= attack_range/2)
         {
@@ -21,7 +21,7 @@ namespace mtm
         }
     }
 
-    char Sniper::getAscii()
+    char Sniper::getAscii() const
     {
         if (this->team == POWERLIFTERS)
         {

@@ -18,14 +18,14 @@ namespace mtm
         static const char POWERLIFTERS_ASCII = 'S';
 
     public:
-        Sniper(int health, int ammo, int attack_range, int power, Team team);
+        Sniper(units_t health, units_t ammo, units_t attack_range, units_t power, Team team);
         ~Sniper() = default;
 
         // Inherited functions
-        std::shared_ptr<Character> clone();
-        void validateRange(int distance);
+        std::shared_ptr<Character> clone() const;
+        void validateRange(int distance) const;
         void attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates);
-        char getAscii();
+        char getAscii() const;
 
 
     };   
