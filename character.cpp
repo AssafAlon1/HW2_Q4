@@ -3,7 +3,7 @@
 namespace mtm
 {
     Character::Character(int health, int ammo, int attack_range, int power, Team team,
-                  int moving_range, int reload_amount, char ascii_representation)
+                  int moving_range, int attack_cost, int reload_amount)
     {
         this->health        = health;
         this->ammo          = ammo;
@@ -22,16 +22,16 @@ namespace mtm
         ammo += reload_amount;
     }
 
-    virtual void Character::validateRange(const int distance) const
+    void Character::validateRange(const int distance) const
     {
-        if (distance > range)
+        if (distance > attack_range)
         {
             // OutOfRange
         }
     }
 
 
-    virtual void Character::validateTarget(std::shared_ptr<Character> target) const
+    void Character::validateTarget(std::shared_ptr<Character> target) const
     {
         if (target->team != team)
         {
@@ -45,16 +45,12 @@ namespace mtm
         health -= damage_amount;
     }
 
-    void Character::isAlive() const
+    bool Character::isAlive() const
     {
-        if(health == 0)
-        {
-            return false;
-        }
-        return true:
+        return health > 0;
     }
 
-    void Character::basicAttackValidation(GridPoint& src_coordinate, GridPoint& dst_coordinate, BoardCell& cell)
+    void Character::basicAttackValidation(const GridPoint& src_coordinate, const GridPoint& dst_coordinate)
     {
         // IllegalCell  <-- Do on game?
 
@@ -64,6 +60,6 @@ namespace mtm
 
         // OutOfAmmo
 
-        return
+        return;
     }
 }

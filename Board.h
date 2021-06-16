@@ -11,7 +11,7 @@ using std::vector;
 namespace mtm
 {
     class Character; // Forward declaration of Character
-    
+
     class Board
     {
     public:
@@ -24,7 +24,6 @@ namespace mtm
         std::shared_ptr<Character> getCharacter(GridPoint& coordinate);
         void removeCharacter(GridPoint& coordinate);
         void putCharacter(GridPoint& coordinate, std::shared_ptr<Character> character);
-
 
     private:
         class BoardCell;

@@ -18,6 +18,6 @@ set(CMAKE_CPP_FLAGS ${MTM_FLAGS_DEBUG})
 
 
 # Add the names of your source files here
-set(CPP_FILES main.cpp)
+set(CPP_FILES main.cpp Auxiliaries.cpp Character.cpp Board.cpp)
 
 add_executable(game ${CPP_FILES})

@@ -1,11 +1,16 @@
 #ifndef HW2_CHARACTER_H
 #define HW2_CHARACTER_H
 
+#include <memory>
+
 #include "Auxiliaries.h"
 #include "Board.h"
 
+
 namespace mtm
 {
+
+    class Board; // Forward declaration of Board
     class Character
     {    
     public:
