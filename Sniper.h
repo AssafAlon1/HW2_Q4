@@ -28,6 +28,7 @@ namespace mtm
         static const char POWERLIFTERS_ASCII = 'N';
 
         static const int POWER_MULTIPLYER    = 2;
+        static const int RANGE_DIVIDOR       = 2;
 
     };   
 }

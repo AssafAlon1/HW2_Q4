@@ -2,7 +2,7 @@
 #define HW2_EXECPTIONS_H
 
 #include <stdexcept>
-#include <typeinfo>
+//#include <typeinfo>
 #include <iostream>
 //#include <string>
 
@@ -10,30 +10,68 @@ namespace mtm
 {
     class Exception : std::exception {
     public:
-        virtual const char* what()
-        {
-            //std::cout << typeid(*this).name();
-            std::string return_string = "A game related error has occured: ";
-            return_string.append(typeid(*this).name());
-            return return_string.c_str();
-        }
+        Exception(std::string name);
+        ~Exception() = default;
+        const char* what() const noexcept override;
+    private:
+        std::string exception_name;
     };
 
-    class IllegalArgument : public Exception {}; // OVERWRITE WHAT() FUNCTION
+    class IllegalArgument : public Exception 
+    {
+    public:
+        IllegalArgument();
+        ~IllegalArgument() = default;
+    };
 
-    class IllegalCell : public Exception {};
+    class IllegalCell : public Exception 
+    {
+    public:
+        IllegalCell();
+        ~IllegalCell() = default;
+    };
 
-    class CellEmpty : public Exception {};       // OVERWRITE WHAT() FUNCTION
+    class CellEmpty : public Exception 
+    {
+    public:
+        CellEmpty();
+        ~CellEmpty() = default;
+    };     
 
-    class MoveTooFar : public Exception {};      
+    class MoveTooFar : public Exception 
+    {
+    public:
+        MoveTooFar();
+        ~MoveTooFar() = default;
+    };      
 
-    class CellOccupied : public Exception {};
+    class CellOccupied : public Exception 
+    {
+    public:
+        CellOccupied();
+        ~CellOccupied() = default;
+    };
 
-    class OutOfRange : public Exception {};
+    class OutOfRange : public Exception 
+    {
+    public:
+        OutOfRange();
+        ~OutOfRange() = default;
+    };
 
-    class OutOfAmmo : public Exception {};
+    class OutOfAmmo : public Exception 
+    {
+    public:
+        OutOfAmmo();
+        ~OutOfAmmo() = default;
+    };
 
-    class IllegalTarget : public Exception {};
+    class IllegalTarget : public Exception 
+    {
+    public:
+        IllegalTarget();
+        ~IllegalTarget() = default;
+    };
     
 }
 

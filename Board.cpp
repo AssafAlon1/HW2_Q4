@@ -64,7 +64,10 @@ namespace mtm
         return this->cells[coordinates.row][coordinates.col].putCharacter(character);
     }
     
-
+    int Board::getWidth() const
+    {
+        return cols;
+    }
 
     //=========================================
     //======== BoardCell implementation =======

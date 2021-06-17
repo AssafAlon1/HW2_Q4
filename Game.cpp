@@ -7,6 +7,7 @@ namespace mtm
 {
     Game::Game(int height, int width) : board(Board(height, width))
     {
+        board = Board(height, width);
     }
 
 
@@ -32,6 +33,11 @@ namespace mtm
     std::shared_ptr<Character> Game::makeCharacter(CharacterType type, Team team,
                                             units_t health, units_t ammo, units_t range, units_t power)
     {
+        if (health <= 0)
+        {
+            throw IllegalArgument();
+        }
+
         if (type == SNIPER)
         {
             return std::shared_ptr<Sniper>(new Sniper(health, ammo, range, power, team));
@@ -59,14 +65,11 @@ namespace mtm
         board.putCharacter(coordinates, character);
     }
 
-
     void Game::attack (const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
     {
         this->verifySourceCell(src_coordinates);
 
-        // ??? Call attack functions
-
-        return;
+        this->board.getCharacter(src_coordinates)->attack(board , src_coordinates , dst_coordinates);
     }
 
     void Game::reload (const GridPoint& coordinates)
@@ -98,12 +101,14 @@ namespace mtm
             amount_of_crossfitters++;
         }
 
+        // If both / none of the teams got living characters
         if ((amount_of_crossfitters >  0 && amount_of_powerlifters >  0) || 
              (amount_of_crossfitters == 0 && amount_of_powerlifters == 0))
         {
             return false;
         }
         
+        // Update 
         if (winningTeam != nullptr)
         {
             *winningTeam = amount_of_crossfitters == 0 ? POWERLIFTERS : CROSSFITTERS;
@@ -111,6 +116,26 @@ namespace mtm
         return true;
     }
 
+
+    std::ostream& operator<<(std::ostream& out_stream, const Game& game)
+    {
+        std::string board_representation_by_chars = "";
+        for (Board::Iterator iterator = game.board.begin() ; !(iterator == game.board.end()) ; iterator++)
+        {
+            if (*iterator == nullptr)
+            {
+                board_representation_by_chars += " ";
+                continue;
+            }
+
+            board_representation_by_chars += (*iterator)->getAscii();
+        }
+        
+        // ????? IS UNSIGNED INT CASTING NEEDED??
+        //const char* str_end = board_representation_by_chars.c_str() + board_representation_by_chars.size();
+        //return printGameBoard(out_stream, board_representation_by_chars.c_str(), str_end, game.board.getWidth());
+        return out_stream;
+    }
 
     void Game::verifySourceCell(const GridPoint& coordinates)
     {

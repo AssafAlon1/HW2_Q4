@@ -56,10 +56,12 @@ void boardTest1()
     assert(!board.isCellInBoard(coordinate));
     coordinate = GridPoint(-1, 2);
     assert(!board.isCellInBoard(coordinate));
-    // try
-    // {
-        
-    // }
+    try
+    {
+        board = Board(-1, 3);
+        throw std::exception();
+    }
+    catch (mtm::IllegalArgument& e) {}
 
     cout << "[OK]" << endl;
 }
@@ -78,7 +80,7 @@ void basicTest1()
     game1.addCharacter(co, sniper1);
     game1.addCharacter(GridPoint(1,3), sniper1);
     assert(game1.isOver());
-    Team winning_team = CROSSFITTERS;
+    Team winning_team;
     assert(game1.isOver(&winning_team));
     assert(winning_team == POWERLIFTERS);
     game1.addCharacter(GridPoint(0,1), sniper2);
@@ -112,6 +114,5 @@ int main ()
     exceptionTest();
     boardTest1(); // Private
     basicTest1(); // Private
-
     //cout << ceil((double(5)/3));
 }

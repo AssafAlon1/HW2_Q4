@@ -17,7 +17,7 @@ namespace mtm
     public:
         Board(int rows, int cols);
         ~Board() = default;
-        Board(const Board& board) = default;
+        //Board(const Board& board) = default;
 
         bool isCellInBoard(const GridPoint& coordinates) const;
         bool isCellOccupied(const GridPoint& coordinates) const;
@@ -29,6 +29,8 @@ namespace mtm
         class Iterator;
         Iterator begin() const;
         Iterator end() const;
+
+        int getWidth() const;
     private:
 
         class BoardCell;

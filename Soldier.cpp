@@ -26,22 +26,42 @@ namespace mtm
 
     void Soldier::attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
     {
-        // Check for OutOfRange , OutOfAmmo , IlegalTarget ...
+        // Input verification
         this->basicAttackValidation(board ,src_coordinates, dst_coordinates);
 
-        // destination is not in straight line
-        this->validateTarget(board , src_coordinates , dst_coordinates);
-
-        // actual attack
-        //for (int row = dst_coordinates - attack_range/3)
-
-
-
-
-
-        // update info - reduce ammo 
+        // Ammo reduction and deal damage to enemies in range
         this->ammo -= -attack_cost;
+        int range_radius = ceil(double(attack_range)/AREA_OF_EFFECT_POWER_DIVIDOR);
+        for (int row = dst_coordinates.row - range_radius ; row < dst_coordinates.row + range_radius ; row++)
+        {
+            for (int col = dst_coordinates.col - range_radius ; col < dst_coordinates.col + range_radius ; col++)
+            {
+                GridPoint current_coordinates = GridPoint(row, col);
+                if(!(board.isCellInBoard(current_coordinates)) || !board.isCellOccupied(current_coordinates))
+                {
+                    continue;
+                }
 
+                // Enemy on target cell
+                std::shared_ptr<Character> target = board.getCharacter(current_coordinates);
+                if (target->getTeam() != this->team)
+                {
+                    units_t damage = power;
+
+                    // Area of effect damage
+                    if (!(dst_coordinates == current_coordinates))
+                    {
+                        damage = ceil(double(power)/AREA_OF_EFFECT_POWER_DIVIDOR);
+                    }
+
+                    target->takeDamage(damage);
+                    if (!(target->isAlive()))
+                    {
+                        board.removeCharacter(dst_coordinates);
+                    }
+                }
+            }
+        }
     }
 
     char Soldier::getAscii() const

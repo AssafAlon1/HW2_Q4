@@ -1,5 +1,6 @@
 #include "Medic.h"
 #include "Exceptions.h"
+
 namespace mtm
 {
     Medic::Medic(units_t health, units_t ammo, units_t attack_range, units_t power, Team team)

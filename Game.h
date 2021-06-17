@@ -11,7 +11,7 @@ namespace mtm
     
     public:
         Game(int height, int width);
-        //~Game() = default;                // default?
+        ~Game() = default;
         //Game(const Game& other); // default?
         //Game& operator= (const Game& other);
 
