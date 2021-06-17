@@ -34,16 +34,28 @@ namespace mtm
 
     void Sniper::attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
     {
+        // Check for OutOfRange , OutOfAmmo , IlegalTarget ...
+        this->basicAttackValidation(board ,src_coordinates, dst_coordinates);
         
-        //this->basicAttackValidation(src_coordinates, dst_coordinates);
+        // Deals damage 
+        if ((this->attack_counter + 1) % 3 == 0)
+        {
+            board.getCharacter(dst_coordinates)->takeDamage(this->power*POWER_MULTIPLYER);
+        }
+        else 
+        {
+            board.getCharacter(dst_coordinates)->takeDamage(this->power);
+        }
 
-        // IlegalTarget [only enemy]
+        // Update info - reduce ammo, update counted
+        this->ammo -= -attack_cost;
+        this->attack_counter++;
 
-        // actual attack
-
-        // reduce ammo 
-        // do damage [or double damage] & update counter
-        // check if killed character
-        //
+        // Check if the enemy was killed
+        if (board.getCharacter(dst_coordinates)->isAlive() != true)
+        {
+            board.removeCharacter(dst_coordinates);
+        }
+        
     }
 }

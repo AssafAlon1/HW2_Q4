@@ -29,6 +29,8 @@ namespace mtm
 
     private:
         Board board;
+
+        void verifySourceCell(const GridPoint& coordinates);
     };
 
     

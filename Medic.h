@@ -15,7 +15,8 @@ namespace mtm
         // Inherited functions
         std::shared_ptr<Character> clone() const;
         //void validateRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
-        void validateTarget(std::shared_ptr<Character> target) const;
+        void validateTarget(const Board& board, const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
+        void validateAmmo(const Board& board, const GridPoint& dst_coordinates) const;
         void attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates);
         char getAscii() const;
         
@@ -26,6 +27,8 @@ namespace mtm
         static const int RELOAD_AMOUNT       = 5;
         static const char CROSSFITTERS_ASCII = 'm';
         static const char POWERLIFTERS_ASCII = 'M';
+
+        static const int HEALING_MULTIPLYER  = -1;
     };
 }
 

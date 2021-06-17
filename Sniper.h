@@ -24,8 +24,10 @@ namespace mtm
         static const int MOVING_RANGE        = 4;
         static const int ATTACK_COST         = 1;
         static const int RELOAD_AMOUNT       = 2;
-        static const char CROSSFITTERS_ASCII = 's';
-        static const char POWERLIFTERS_ASCII = 'S';
+        static const char CROSSFITTERS_ASCII = 'n';
+        static const char POWERLIFTERS_ASCII = 'N';
+
+        static const int POWER_MULTIPLYER    = 2;
 
     };   
 }

@@ -26,13 +26,14 @@ namespace mtm
         virtual char getAscii() const = 0;
 
         virtual void validateRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
-        virtual void validateTarget(std::shared_ptr<Character> target) const;
+        virtual void validateTarget(const Board& board, const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
+        virtual void validateAmmo(const Board& board, const GridPoint& dst_coordinates) const;
 
         void reload();
         void move(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates);
         void takeDamage(const units_t damage_amount);
         bool isAlive() const;
-        void basicAttackValidation(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
+        void basicAttackValidation(const Board& board, const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
         Team getTeam() const;
 
     protected:   // PRIVATIZE WHATEVER WE CAN / FIND ALTERNATIVES

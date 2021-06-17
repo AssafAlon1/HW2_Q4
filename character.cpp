@@ -51,15 +51,25 @@ namespace mtm
     }
 
     // Validates the target of an attack
-    void Character::validateTarget(std::shared_ptr<Character> target) const
+    void Character::validateTarget(const Board& board, const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const
     {
-        if (target == nullptr)
+        if (!board.isCellOccupied(dst_coordinates))
         {
             throw IllegalTarget(); // because cell is empty
         }
+
+        std::shared_ptr<Character> target = board.getCharacter(dst_coordinates);
         if (target->team != team)
         {
             throw IllegalTarget(); // because target is ally
+        }
+    }
+
+    void Character::validateAmmo(const Board& board, const GridPoint& dst_coordinates) const
+    {
+        if(ammo < attack_cost)
+        {
+            throw OutOfAmmo();
         }
     }
 
@@ -73,13 +83,16 @@ namespace mtm
         return health > 0;
     }
 
-    void Character::basicAttackValidation(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const
+    void Character::basicAttackValidation(const Board& board, const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const
     {
-        // CellEmpty
-
         // OutOfRange
+        validateRange(src_coordinates , dst_coordinates);
 
         // OutOfAmmo
+        validateAmmo(board, dst_coordinates);
+
+        // IllegalTarget
+        validateTarget(board, src_coordinates, dst_coordinates);
 
         return;
     }

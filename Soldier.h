@@ -15,6 +15,7 @@ namespace mtm
         // Inherited functions
         std::shared_ptr<Character> clone() const;
         void validateRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
+        void validateTarget(const Board& board, const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
         void attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates);
         char getAscii() const;
 

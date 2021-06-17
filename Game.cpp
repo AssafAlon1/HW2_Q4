@@ -60,31 +60,42 @@ namespace mtm
     }
 
 
+    void Game::attack (const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
+    {
+        this->verifySourceCell(src_coordinates);
+
+        // ??? Call attack functions
+
+        return;
+    }
+
+    void Game::reload (const GridPoint& coordinates)
+    {
+        this->verifySourceCell(coordinates);
+        this->board.getCharacter(coordinates)->reload();
+    }
+
     bool Game::isOver (Team* winningTeam) const
     {
-        //int powerlifter_characters = std::count_if(board.begin(), board.end(), isPowerlifter);
-        //[](std::shared_ptr<Character> ch){
-        //    return ch->getTeam() == POWERLIFTERS;
-        //}
-        //std::count_if(board.begin(), board.end(), isPowerlifter);
-
         int amount_of_powerlifters = 0;
         int amount_of_crossfitters = 0;
         for (Board::Iterator iterator = board.begin() ; !(iterator == board.end()) ; iterator++)
         {
+            // No character in cell
             if ((*iterator) == nullptr)
             {
                 continue;
             }
 
+            // Powerlifter in cell
             if ( (*iterator)->getTeam() == POWERLIFTERS)
             {
                 amount_of_powerlifters++;
+                continue;
             }
-            else
-            {
-                amount_of_crossfitters++;
-            }
+
+            // Crossfitter in cell
+            amount_of_crossfitters++;
         }
 
         if ((amount_of_crossfitters >  0 && amount_of_powerlifters >  0) || 
@@ -93,6 +104,24 @@ namespace mtm
             return false;
         }
         
+        if (winningTeam != nullptr)
+        {
+            *winningTeam = amount_of_crossfitters == 0 ? POWERLIFTERS : CROSSFITTERS;
+        }
         return true;
+    }
+
+
+    void Game::verifySourceCell(const GridPoint& coordinates)
+    {
+        if (!(this->board.isCellInBoard(coordinates)))
+        {
+            throw IllegalCell();
+        }
+
+        if (!(this->board.isCellOccupied(coordinates)))
+        {
+            throw CellEmpty();
+        }
     }
 }
