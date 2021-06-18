@@ -14,9 +14,14 @@ namespace mtm
     // Validates ammo if the target is an enemy
     void Medic::validateAmmo(const Board& board, const GridPoint& dst_coordinates) const
     {
-        if (board.getCharacter(dst_coordinates)->getTeam() != this->getTeam() && ammo < attack_cost)
+        // Out of ammo
+        if (ammo < attack_cost)
         {
-            throw OutOfAmmo();
+            // If there's an ally on the destination cell - it's not an issue. otherwise - throw
+            if (!board.isCellOccupied(dst_coordinates) || board.getCharacter(dst_coordinates)->getTeam() != this->getTeam())
+            {
+                throw OutOfAmmo();
+            }
         }
     }
 

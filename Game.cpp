@@ -16,15 +16,11 @@ namespace mtm
     void Game::move (const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
     {
         // Verify basic board related situations
-        if (!board.isCellInBoard(dst_coordinates) || !(board.isCellInBoard(src_coordinates)))
+        if (!board.isCellInBoard(dst_coordinates))
         {
             throw IllegalCell();
         }
-
-        if (!(board.isCellOccupied(src_coordinates)))
-        {
-            throw CellEmpty();
-        }
+        this->verifySourceCell(src_coordinates);
 
         // Call the character's move function to continue the verification and do the moving
         board.getCharacter(src_coordinates)->move(board, src_coordinates, dst_coordinates);
@@ -68,8 +64,14 @@ namespace mtm
 
     void Game::attack (const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
     {
-        this->verifySourceCell(src_coordinates);
+        // Verify source and destination cells are valid
+        if (!board.isCellInBoard(dst_coordinates))
+        {
+            throw IllegalCell();
+        }
 
+        this->verifySourceCell(src_coordinates);
+        
         this->board.getCharacter(src_coordinates)->attack(board , src_coordinates , dst_coordinates);
     }
 

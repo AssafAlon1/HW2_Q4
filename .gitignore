@@ -24,3 +24,7 @@ api
 ### CMake Patch ###
 # External projects
 *-prefix/
+
+
+### tests ###
+*.txt
