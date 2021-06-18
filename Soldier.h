@@ -25,7 +25,7 @@ namespace mtm
         static const char CROSSFITTERS_ASCII = 's';
         static const char POWERLIFTERS_ASCII = 'S';
 
-        static const int AREA_OF_EFFECT_RANGE_DIVIDOR  = 3;
+        static const int AREA_OF_EFFECT_RANGE_DIVIDOR = 3;
         static const int AREA_OF_EFFECT_POWER_DIVIDOR = 2;
     };
 }

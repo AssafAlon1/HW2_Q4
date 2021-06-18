@@ -31,7 +31,7 @@ namespace mtm
 
         // Ammo reduction and deal damage to enemies in range
         this->ammo -= attack_cost;
-        int range_radius = ceil(double(attack_range)/AREA_OF_EFFECT_POWER_DIVIDOR);
+        int range_radius = ceil(double(attack_range)/AREA_OF_EFFECT_RANGE_DIVIDOR);
         for (int row = dst_coordinates.row - range_radius ; row < dst_coordinates.row + range_radius ; row++)
         {
             for (int col = dst_coordinates.col - range_radius ; col < dst_coordinates.col + range_radius ; col++)
@@ -40,7 +40,7 @@ namespace mtm
                 
                 if(!(board.isCellInBoard(current_coordinates)) ||
                    !board.isCellOccupied(current_coordinates)  ||
-                   GridPoint::distance(current_coordinates, dst_coordinates) > attack_range)
+                   GridPoint::distance(current_coordinates, dst_coordinates) > range_radius)
                 {
                     continue;
                 }
