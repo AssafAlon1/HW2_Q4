@@ -1,118 +1,194 @@
-#include <assert.h>
-#include "Character.h"
+#include <iostream>
+
+#include <cassert>
+
 #include "Exceptions.h"
-#include "Auxiliaries.h"
 #include "Game.h"
 
-#include "Board.h"
+using namespace mtm;
 
-using std::cout;
-using std::endl;
-using mtm::GridPoint;
-using mtm::Character;
-using mtm::Game;
-using mtm::SNIPER;
-using mtm::MEDIC;
-using mtm::SOLDIER;
-using mtm::POWERLIFTERS;
-using mtm::CROSSFITTERS;
-using mtm::Team;
+void example1();
+void example2();
 
-
-using mtm::Board; // Private
-
-void exceptionTest()
-{
-    try
-    {
-        throw mtm::IllegalArgument();
-    }
-    catch(mtm::Exception& e)
-    {
-        cout << e.what() << '\n';
-    }
-    
+int main() {
+    example1();
+    example2();
 }
 
-void boardTest1()
-{
-    cout << "Running boardTest1... ";
-    Board board = Board(4, 4);
-    
-    for (int i = 0 ; i < 4 ; i++)
-    {
-        for (int j = 0 ; j < 4 ; j++)
-        {
-            GridPoint coordinate = GridPoint(i, j);
-            assert(board.isCellInBoard(coordinate));
-            assert(!board.isCellOccupied(coordinate));
-        }
+void example1() {
+    std::cout << "------example 1------" << std::endl;
+    Game g1(8,8);
+    g1.addCharacter(GridPoint(1,1), Game::makeCharacter(CharacterType::MEDIC, Team::POWERLIFTERS, 10, 2, 4, 5));
+    g1.addCharacter(GridPoint(1,4), Game::makeCharacter(CharacterType::SNIPER, Team::POWERLIFTERS, 10, 2, 4, 5));
+    g1.addCharacter(GridPoint(6,1), Game::makeCharacter(CharacterType::SOLDIER, Team::CROSSFITTERS, 10, 2, 4, 5));
+    g1.addCharacter(GridPoint(6,4), Game::makeCharacter(CharacterType::MEDIC, Team::CROSSFITTERS, 10, 2, 4, 5));
+    std::cout << g1 << std::endl;
+    g1.move(GridPoint(1,1), GridPoint(1,2));
+    std::cout << g1 << std::endl;
+
+
+    try {
+        g1.attack(GridPoint(1,4), GridPoint(1,2)); // can't attak ally
+    } catch (mtm::IllegalTarget& e) {
+        std::cout << e.what() << std::endl;
     }
 
-    GridPoint coordinate = GridPoint(1, 2);
-    assert(board.getCharacter(coordinate) == nullptr);
-
-    coordinate = GridPoint(5, 2);
-    assert(!board.isCellInBoard(coordinate));
-    coordinate = GridPoint(-1, 2);
-    assert(!board.isCellInBoard(coordinate));
-    try
-    {
-        board = Board(-1, 3);
-        throw std::exception();
+    try {
+        g1.attack(GridPoint(1,4), GridPoint(6,1)); // should not work - not in range
+    } catch (mtm::OutOfRange& e) {
+        std::cout << e.what() << std::endl;
     }
-    catch (mtm::IllegalArgument& e) {}
 
-    cout << "[OK]" << endl;
+    g1.move(GridPoint(1,4), GridPoint(3,2));
+    std::cout << g1 << std::endl;
+    try {
+        g1.attack(GridPoint(1,4), GridPoint(6,4)); // character moved away
+    } catch (mtm::CellEmpty& e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    g1.attack(GridPoint(3,2), GridPoint(6,1)); // now it can hit
+
+    g1.move(GridPoint(6,1), GridPoint(4,2));
+    std::cout << g1 << std::endl;
+
+    try {
+        g1.attack(GridPoint(3,2), GridPoint(4,2)); // sniper can't attack close targets
+    } catch (mtm::OutOfRange& e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    g1.move(GridPoint(4,2), GridPoint(6,2));
+    std::cout << g1 << std::endl;
+
+    g1.attack(GridPoint(3,2), GridPoint(6,2)); // now it can hit
+    std::cout << g1 << std::endl;
+
+    try {
+        g1.move(GridPoint(6,2), GridPoint(6,1)); // soldier was killed and removed
+    } catch (mtm::CellEmpty& e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    g1.move(GridPoint(3,2), GridPoint(3,4));
+
+    try {
+        g1.attack(GridPoint(3,4), GridPoint(6,4)); // sniper out of ammo
+    } catch (mtm::OutOfAmmo& e) {
+        std::cout << e.what() << std::endl;
+    }
+
+
+    try {
+        g1.attack(GridPoint(6,4), GridPoint(6,4)); // medic can't heal itself
+    } catch (mtm::IllegalTarget& e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    mtm::Team winning_team = mtm::Team::CROSSFITTERS;
+    assert(g1.isOver(&winning_team) == false);
+    std::cout << "isOver: " <<  g1.isOver(&winning_team) << std::endl;
+    std::cout << "is powerlifters the winning team?: " <<  (winning_team == mtm::Team::POWERLIFTERS) << std::endl;
+
+    g1.reload(GridPoint(3,4));
+    g1.attack(GridPoint(3,4), GridPoint(6,4)); // now can shoot
+
+    std::cout << g1 << std::endl;
+
+    try {
+        g1.move(GridPoint(6,4), GridPoint(6,1)); // medic was killed and removed
+        // the kill was possible because of the sniper double power third attack
+    } catch (mtm::CellEmpty& e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    assert(g1.isOver(&winning_team) == true);
+    assert(winning_team == mtm::Team::POWERLIFTERS);
+    std::cout << "isOver: " <<  g1.isOver(&winning_team) << std::endl;
+    std::cout << "is powerlifters the winning team?: " <<  (winning_team == mtm::Team::POWERLIFTERS) << std::endl;
 }
 
-void basicTest1()
-{
-    cout << "Running basicTest1... ";
-    std::shared_ptr<Character> sniper1 = Game::makeCharacter(SNIPER, POWERLIFTERS, 1, 4, 4, 4);
-    std::shared_ptr<Character> sniper2 = Game::makeCharacter(SNIPER, CROSSFITTERS, 1, 4, 4, 4);
-    assert(sniper1->getAscii() == 'N'); // Private
-    assert(sniper2->getAscii() == 'n'); // Private
+void example2() {
+    std::cout << "------example 2------" << std::endl;
+    Game g1(5,10);
+    g1.addCharacter(GridPoint(3,0), Game::makeCharacter(CharacterType::SOLDIER, Team::POWERLIFTERS, 20, 0, 3, 5));
+    g1.addCharacter(GridPoint(2,6), Game::makeCharacter(CharacterType::SNIPER, Team::CROSSFITTERS, 10, 2, 4, 5));
+    g1.addCharacter(GridPoint(3,8), Game::makeCharacter(CharacterType::SNIPER, Team::CROSSFITTERS, 10, 2, 4, 5));
+    g1.addCharacter(GridPoint(3,6), Game::makeCharacter(CharacterType::MEDIC, Team::CROSSFITTERS, 10, 2, 4, 5));
+    g1.addCharacter(GridPoint(4,6), Game::makeCharacter(CharacterType::MEDIC, Team::CROSSFITTERS, 10, 2, 4, 5));
+    std::cout << g1 << std::endl;
 
-
-    Game game1 = Game(4, 4);
-    GridPoint co = GridPoint(0,0);
-    game1.addCharacter(co, sniper1);
-    game1.addCharacter(GridPoint(1,3), sniper1);
-    assert(game1.isOver());
-    Team winning_team;
-    assert(game1.isOver(&winning_team));
-    assert(winning_team == POWERLIFTERS);
-    game1.addCharacter(GridPoint(0,1), sniper2);
-    assert(!(game1.isOver()));
-    
     try {
-        game1.addCharacter(GridPoint(-1,0), sniper1);
-
+        g1.attack(GridPoint(3,0), GridPoint(3,6));
+    } catch (mtm::OutOfRange& e) {
+        std::cout << e.what() << std::endl;
     }
-    catch (mtm::IllegalCell& e) {}
-    
+
     try {
-        game1.addCharacter(GridPoint(0,0),  sniper1);
-        throw;
+        g1.move(GridPoint(3,0), GridPoint(3,4)); // soldier only moves 3 at a time
+    } catch (mtm::MoveTooFar& e) {
+        std::cout << e.what() << std::endl;
     }
-    catch (mtm::CellOccupied& e) {}
+
+    std::cout << g1 << std::endl; // has not changed
+
+    Game g2 = g1; // copy constructor - games should be independent
+
+    g1.move(GridPoint(3,0), GridPoint(3,3));
+
+    std::cout << g1 << std::endl; // changed
+    std::cout << g2 << std::endl; // has not changed
 
     try {
-        game1.move(GridPoint(0,0), GridPoint(3, 3));
-        throw;
-        }
-    catch (mtm::MoveTooFar& e) {}
+        g1.attack(GridPoint(3,3), GridPoint(3,6)); // soldier has 0 ammo
+    } catch (mtm::OutOfAmmo& e) {
+        std::cout << e.what() << std::endl;
+    }
 
+    try {
+        g1.reload(GridPoint(3,2));
+    } catch (mtm::CellEmpty& e) {
+        std::cout << e.what() << std::endl;
+    }
 
+    try {
+        g1.reload(GridPoint(3,-3));
+    } catch (mtm::IllegalCell& e) {
+        std::cout << e.what() << std::endl;
+    }
+    try {
+        g1.reload(GridPoint(3,13));
+    } catch (mtm::IllegalCell& e) {
+        std::cout << e.what() << std::endl;
+    }
 
-    cout << "[OK]" << endl;;
-}
+    g1.reload(GridPoint(3,3)); // now soldier has ammo
 
-int main ()
-{
-    exceptionTest();
-    boardTest1(); // Private
-    basicTest1(); // Private
-    //cout << ceil((double(5)/3));
+    g1.attack(GridPoint(3,3), GridPoint(3,6)); // damages 2 medics and 1 sniper in range
+    std::cout << g1 << std::endl; // everyone still alive
+
+    g1.attack(GridPoint(3,3), GridPoint(3,6)); // one medic dies (took 5+5 damage instead of 3+3 like the others)
+    std::cout << g1 << std::endl;
+
+    g1.attack(GridPoint(3,3), GridPoint(3,6));
+    std::cout << g1 << std::endl;
+
+    g1.attack(GridPoint(4,6), GridPoint(2,6)); // medic heals sniper
+    try {
+        g1.attack(GridPoint(4,6), GridPoint(4,6)); // medic can't heal self
+    } catch (mtm::IllegalTarget& e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    try {
+        g1.attack(GridPoint(3,3), GridPoint(3,6)); // soldier out of ammo
+    } catch (mtm::OutOfAmmo& e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    g1.reload(GridPoint(3,3)); // now soldier has ammo
+    g1.reload(GridPoint(3,3)); // can reload twice - no problem (more ammo)
+
+    g1.attack(GridPoint(3,3), GridPoint(3,6)); // medic dead, sniper not dead
+    std::cout << g1 << std::endl;
 }

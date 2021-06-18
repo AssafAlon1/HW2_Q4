@@ -79,7 +79,7 @@ namespace mtm
     }
     
     // BoardCell constructor
-    Board::BoardCell::BoardCell(GridPoint coordinates) : coordinates(coordinates), character(nullptr)
+    Board::BoardCell::BoardCell(const GridPoint& coordinates) : coordinates(coordinates), character(nullptr)
     {
     }
 
@@ -117,27 +117,31 @@ namespace mtm
 
     Board::Iterator::Iterator(const Board* board, int row, int col) : board(board), row(row), col(col)
     {
+        // if (!(board->isCellInBoard(GridPoint(row, col))))
+        // {
+        //     throw std::out_of_range("?????");
+        // }
     }
 
     // Moves the iterator forwards
     Board::Iterator& Board::Iterator::operator++()
     {
         // Reached the last cell
-        if (col >= board->cols - 1 && row >= board->rows - 1)
+        if (col >= board->cols  || row >= board->rows)
         {
             throw std::out_of_range("Out of range"); // ???
         }
 
         // Reached the end of a row
-        if (row >= board->rows - 1)
+        if (col >= board->cols - 1)
         {
-            row = 0;
-            col++;
+            col = 0;
+            row++;
             return *this;
         }
 
         // Somewhere in the middle
-        row++;
+        col++;
         return *this;
     }
 
@@ -146,7 +150,7 @@ namespace mtm
     Board::Iterator Board::Iterator::operator++(int)
     {
         // Reached the last cell
-        if (col >= board->cols - 1 && row >= board->rows - 1)
+        if (col >= board->cols || row >= board->rows)
         {
             throw std::out_of_range("Out of range"); // ???
         }
@@ -154,15 +158,15 @@ namespace mtm
         Board::Iterator result = *this;
 
         // Reached the end of a row
-        if (row >= board->rows - 1)
+        if (col >= board->cols - 1)
         {
-            row = 0;
-            col++;
+            col = 0;
+            row++;
             return *this;
         }
 
         // Somewhere in the middle
-        row++;
+        col++;
         return result;
     }
 
@@ -188,7 +192,7 @@ namespace mtm
     // Returns an iterator to the end of the board
     Board::Iterator Board::end() const
     {
-        return Board::Iterator(this, rows - 1, cols - 1);
+        return Board::Iterator(this, rows, 0);
     }
 
 }

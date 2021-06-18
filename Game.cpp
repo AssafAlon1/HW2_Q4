@@ -1,13 +1,14 @@
 #include "Game.h"
 #include "Exceptions.h"
 #include "Sniper.h"
+#include "Medic.h"
+#include "Soldier.h"
 #include <algorithm>
-
+#include <type_traits>
 namespace mtm
 {
     Game::Game(int height, int width) : board(Board(height, width))
     {
-        board = Board(height, width);
     }
 
 
@@ -15,7 +16,7 @@ namespace mtm
     void Game::move (const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
     {
         // Verify basic board related situations
-        if (!board.isCellInBoard(dst_coordinates))
+        if (!board.isCellInBoard(dst_coordinates) || !(board.isCellInBoard(src_coordinates)))
         {
             throw IllegalCell();
         }
@@ -45,10 +46,10 @@ namespace mtm
 
         if (type == MEDIC)
         {
-            return nullptr; // UPDATE ME
+            return std::shared_ptr<Medic>(new Medic(health, ammo, range, power, team));
         }
 
-        return nullptr; // UPDATE ME , SOLDIER
+        return std::shared_ptr<Soldier>(new Soldier(health, ammo, range, power, team));
     }
 
 
@@ -130,11 +131,12 @@ namespace mtm
 
             board_representation_by_chars += (*iterator)->getAscii();
         }
-        
+
         // ????? IS UNSIGNED INT CASTING NEEDED??
-        //const char* str_end = board_representation_by_chars.c_str() + board_representation_by_chars.size();
-        //return printGameBoard(out_stream, board_representation_by_chars.c_str(), str_end, game.board.getWidth());
-        return out_stream;
+        const char* str_end = board_representation_by_chars.c_str() + board_representation_by_chars.size();
+        //int width_int = game.board.getWidth();
+        //unsigned int width = static_cast<std::make_unsigned<decltype(width_int)>::type>(width_int);
+        return printGameBoard(out_stream, board_representation_by_chars.c_str(), str_end, game.board.getWidth());
     }
 
     void Game::verifySourceCell(const GridPoint& coordinates)

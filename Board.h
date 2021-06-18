@@ -50,7 +50,7 @@ namespace mtm
     {
     public:
         BoardCell();
-        BoardCell(GridPoint coordinates);
+        BoardCell(const GridPoint& coordinates);
         BoardCell(const BoardCell& cell) = default;
         ~BoardCell() = default;
 

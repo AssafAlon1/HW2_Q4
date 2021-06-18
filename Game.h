@@ -8,7 +8,6 @@ namespace mtm
 {
     class Game
     {
-    
     public:
         Game(int height, int width);
         ~Game() = default;

@@ -6,7 +6,7 @@ namespace mtm
     Medic::Medic(units_t health, units_t ammo, units_t attack_range, units_t power, Team team)
     : Character(health, ammo, attack_range, power, team, MOVING_RANGE, ATTACK_COST, RELOAD_AMOUNT) {}
 
-    std::shared_ptr<Character> Medic::clone() const
+    std::shared_ptr<Character> Medic::clone() const 
     {
         return std::shared_ptr<Medic>(new Medic(*this));
     }

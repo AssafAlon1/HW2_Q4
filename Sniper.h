@@ -13,9 +13,9 @@ namespace mtm
         ~Sniper() = default;
 
         // Inherited functions
-        std::shared_ptr<Character> clone() const;
-        void validateRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const;
-        void attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates);
+        std::shared_ptr<Character> clone() const override;
+        void validateRange(const GridPoint& src_coordinates, const GridPoint& dst_coordinates) const override;
+        void attack(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates) override;
         char getAscii() const;
 
     private:

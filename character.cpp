@@ -25,7 +25,7 @@ namespace mtm
     // Moves a character from source coordinates to destination coordinates
     void Character::move(Board& board ,const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
     {
-        if (GridPoint::distance(src_coordinates, dst_coordinates) >= moving_range)
+        if (GridPoint::distance(src_coordinates, dst_coordinates) > moving_range)
         {
             throw MoveTooFar();
         }
@@ -59,7 +59,7 @@ namespace mtm
         }
 
         std::shared_ptr<Character> target = board.getCharacter(dst_coordinates);
-        if (target->team != team)
+        if (target->team == team)
         {
             throw IllegalTarget(); // because target is ally
         }

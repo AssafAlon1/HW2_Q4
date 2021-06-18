@@ -10,11 +10,12 @@ namespace mtm
 {
     class Exception : std::exception {
     public:
-        Exception(std::string name);
+        Exception(std::string inner_exception_name);
         ~Exception() = default;
         const char* what() const noexcept override;
     private:
-        std::string exception_name;
+        static const std::string MESSAGE_TEMPLATE;
+        std::string message;
     };
 
     class IllegalArgument : public Exception 

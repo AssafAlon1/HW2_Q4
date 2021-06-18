@@ -50,7 +50,7 @@ namespace mtm
         }
 
         // Update info - reduce ammo, update counted
-        this->ammo -= -attack_cost;
+        this->ammo -= attack_cost;
         this->attack_counter++;
 
         // Check if the enemy was killed
